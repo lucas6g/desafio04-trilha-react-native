@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { useWindowDimensions, ViewProps } from 'react-native';
 import {
+
+
   useAnimatedStyle,
   useSharedValue,
   withTiming
@@ -14,12 +16,23 @@ interface CardAnimationProps extends ViewProps {
 
 export function CardAnimation({ children, ...rest }: CardAnimationProps) {
   const { width: displayWidth } = useWindowDimensions();
+
+
   const cardOpacity = useSharedValue(0);
   const cardOffset = useSharedValue(0.25 * displayWidth);
 
   const animatedStyle = useAnimatedStyle(() => {
+    // TODO - setup animated style
     return {
-      // TODO - setup animated style
+
+      transform: [
+        {
+          translateX: cardOffset.value,
+
+        }
+      ],
+      opacity: cardOpacity.value
+
     }
   })
 
@@ -28,7 +41,14 @@ export function CardAnimation({ children, ...rest }: CardAnimationProps) {
      * TODO - setup cardOpacity.value and cardOffset.value with
      * withTiming()
      */
+    cardOpacity.value = withTiming(1, {
+      duration: 1000
+    })
+    cardOffset.value = withTiming(0, {
+      duration: 1000
+    })
   }, []);
+
 
   return (
     <AnimationContainer {...rest} style={animatedStyle}>
